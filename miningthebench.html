@@ -652,53 +652,33 @@ contamination.toFixed(1) + "%";
 function updateCharts(data){
 
 
-
 if(romChart){
-
-romChart.destroy();
-
+    romChart.destroy();
 }
-
 
 
 if(wasteChart){
-
-wasteChart.destroy();
-
+    wasteChart.destroy();
 }
-
-
-
-
 
 
 
 
 // ROM PAD CHART
 
-
-
 romChart = new Chart(
-
 document.getElementById("romChart"),
-
 {
-
 
 type:"bar",
 
-
 data:{
-
 
 labels:Object.keys(data.romTeams),
 
-
 datasets:[
 
-
 {
-
 label:"Gold",
 
 data:Object.values(data.romTeams)
@@ -713,10 +693,7 @@ borderRadius:8
 },
 
 
-
-
 {
-
 label:"Rock",
 
 data:Object.values(data.romTeams)
@@ -730,120 +707,87 @@ borderRadius:8
 
 }
 
-
 ]
 
-
 },
-
-
-
 
 
 options:{
 
-
 responsive:true,
-
 
 plugins:{
 
-
 legend:{
-
 
 position:"bottom",
 
-
 labels:{
-
 
 color:"white"
 
-
 }
 
-
 }
-
-
 
 },
-
-
-
 
 
 scales:{
 
-
-
 x:{
-
 
 ticks:{
 
-
 color:"white"
 
-
 }
-
 
 },
 
 
-
-
 y:{
-
 
 beginAtZero:true,
 
-
 ticks:{
-
 
 color:"white"
 
+}
 
 }
 
+}
 
 }
 
+}
 
-
-}}
 );
+
+
+
+
 
 
 
 // WASTE PILE CHART
 
 
-
 wasteChart = new Chart(
-
 document.getElementById("wasteChart"),
-
 {
-
 
 type:"bar",
 
-
 data:{
-
 
 labels:Object.keys(data.wasteTeams),
 
-
 datasets:[
 
-
 {
-
 label:"Gold",
 
 data:Object.values(data.wasteTeams)
@@ -858,11 +802,7 @@ borderRadius:8
 },
 
 
-
-
-
 {
-
 label:"Rock",
 
 data:Object.values(data.wasteTeams)
@@ -876,102 +816,67 @@ borderRadius:8
 
 }
 
-
 ]
 
-
 },
-
-
-
 
 
 options:{
 
-
 responsive:true,
-
 
 plugins:{
 
-
 legend:{
-
 
 position:"bottom",
 
-
 labels:{
-
 
 color:"white"
 
-
 }
 
-
 }
-
-
 
 },
-
-
-
 
 
 scales:{
 
-
-
 x:{
-
 
 ticks:{
 
-
 color:"white"
 
-
 }
-
 
 },
 
 
-
-
 y:{
-
 
 beginAtZero:true,
 
-
 ticks:{
-
 
 color:"white"
 
+}
 
 }
 
+}
 
 }
 
-
-
 }
-
-
-}
-
 
 );
 
 
-
 }
-
 
 
 
