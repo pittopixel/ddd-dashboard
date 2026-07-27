@@ -94,7 +94,7 @@ body {
 
     flex:1;
 
-    padding:20px;
+    padding:25px;
 
     border-radius:15px;
 
@@ -105,15 +105,29 @@ body {
     box-shadow:
     0 5px 15px rgba(0,0,0,0.5);
 
-    border-top:5px solid #CE7D01;
+}
+
+
+
+.gold-card {
+
+    border:4px solid #00FF00;
 
 }
 
 
 
-.card-icon {
+.rock-card {
 
-    font-size:38px;
+    border:4px solid #FF8C00;
+
+}
+
+
+
+.waste-card {
+
+    border:4px solid #FF0000;
 
 }
 
@@ -121,7 +135,9 @@ body {
 
 .card h3 {
 
-    color:#ddd;
+    color:#dddddd;
+
+    font-size:20px;
 
 }
 
@@ -129,7 +145,7 @@ body {
 
 .value {
 
-    font-size:45px;
+    font-size:60px;
 
     font-weight:bold;
 
@@ -311,40 +327,15 @@ Live Mine Production Monitoring System
 <div class="cards">
 
 
-<div class="card">
+<div class="card gold-card">
 
-<div class="card-icon">🟡</div>
+<h3>
+Gold Beads at ROM
+</h3>
 
-<h3>Gold Beads at ROM</h3>
-
-<div class="value" id="goldROM">0</div>
-
+<div class="value" id="goldROM">
+0
 </div>
-
-
-
-<div class="card">
-
-<div class="card-icon">🪨</div>
-
-<h3>Rock Beads at ROM</h3>
-
-<div class="value" id="rockROM">0</div>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="card-icon">⚠️</div>
-
-<h3>Gold Beads in Waste</h3>
-
-<div class="value" id="goldWaste">0</div>
-
-</div>
-
 
 </div>
 
@@ -352,7 +343,42 @@ Live Mine Production Monitoring System
 
 
 
-<!-- OPERATIONS METRICS -->
+<div class="card rock-card">
+
+<h3>
+Rock Beads at ROM
+</h3>
+
+<div class="value" id="rockROM">
+0
+</div>
+
+</div>
+
+
+
+
+
+<div class="card waste-card">
+
+<h3>
+Gold Beads in Waste
+</h3>
+
+<div class="value" id="goldWaste">
+0
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- OPERATION METRICS -->
 
 
 <div class="metrics">
@@ -413,7 +439,9 @@ Live Mine Production Monitoring System
 
 <div class="chart-box">
 
-<h2>⛏ ROM Pad</h2>
+<h2>
+⛏ ROM Pad
+</h2>
 
 <canvas id="romChart"></canvas>
 
@@ -421,9 +449,12 @@ Live Mine Production Monitoring System
 
 
 
+
 <div class="chart-box">
 
-<h2>🪨 Waste Pile</h2>
+<h2>
+● Waste Pile
+</h2>
 
 <canvas id="wasteChart"></canvas>
 
@@ -431,6 +462,8 @@ Live Mine Production Monitoring System
 
 
 </div>
+
+
 
 
 
@@ -472,7 +505,7 @@ const data = await response.json();
 
 
 
-// Update main KPI cards
+// Update KPI cards
 
 
 document.getElementById("goldROM").innerHTML =
@@ -490,8 +523,7 @@ data.goldWaste;
 
 
 
-// Calculate operational metrics
-
+// Update operational metrics
 
 updateMetrics(data);
 
@@ -499,13 +531,10 @@ updateMetrics(data);
 
 // Update charts
 
-
 updateCharts(data);
 
 
 
-
-// Update timestamp
 
 
 document.getElementById("updated").innerHTML =
@@ -559,6 +588,7 @@ totalMaterial;
 
 
 
+
 // Gold Recovery %
 
 const totalGold =
@@ -568,6 +598,7 @@ data.goldWaste;
 
 
 let recovery = 0;
+
 
 
 if(totalGold > 0){
@@ -587,9 +618,11 @@ recovery.toFixed(1) + "%";
 
 
 
+
 // Waste contamination %
 
 let contamination = 0;
+
 
 
 if(totalGold > 0){
@@ -616,7 +649,6 @@ contamination.toFixed(1) + "%";
 
 
 
-
 function updateCharts(data){
 
 
@@ -628,11 +660,13 @@ romChart.destroy();
 }
 
 
+
 if(wasteChart){
 
 wasteChart.destroy();
 
 }
+
 
 
 
@@ -663,7 +697,6 @@ labels:Object.keys(data.romTeams),
 datasets:[
 
 
-
 {
 
 label:"Gold",
@@ -673,9 +706,7 @@ data:Object.values(data.romTeams)
 
 backgroundColor:"#CE7D01",
 
-borderColor:"#00FF00",
-
-borderWidth:3,
+borderWidth:0,
 
 borderRadius:8
 
@@ -693,20 +724,18 @@ data:Object.values(data.romTeams)
 
 backgroundColor:"#C2A878",
 
-borderColor:"#FF8C00",
-
-borderWidth:3,
+borderWidth:0,
 
 borderRadius:8
 
 }
 
 
-
 ]
 
 
 },
+
 
 
 
@@ -728,7 +757,9 @@ position:"bottom",
 
 labels:{
 
+
 color:"white"
+
 
 }
 
@@ -738,6 +769,8 @@ color:"white"
 
 
 },
+
+
 
 
 
@@ -758,6 +791,7 @@ color:"white"
 
 
 },
+
 
 
 
@@ -785,7 +819,6 @@ color:"white"
 
 
 }
-
 
 
 }
@@ -826,7 +859,6 @@ labels:Object.keys(data.wasteTeams),
 datasets:[
 
 
-
 {
 
 label:"Gold",
@@ -834,20 +866,14 @@ label:"Gold",
 data:Object.values(data.wasteTeams)
 .map(team=>team.gold),
 
-
 backgroundColor:"#CE7D01",
 
-
-borderColor:"#FF0000",
-
-
-borderWidth:3,
-
+borderWidth:0,
 
 borderRadius:8
 
-
 },
+
 
 
 
@@ -859,21 +885,13 @@ label:"Rock",
 data:Object.values(data.wasteTeams)
 .map(team=>team.rock),
 
-
 backgroundColor:"#C2A878",
 
-
-borderColor:"#FF8C00",
-
-
-borderWidth:3,
-
+borderWidth:0,
 
 borderRadius:8
 
-
 }
-
 
 
 ]
@@ -917,6 +935,8 @@ color:"white"
 
 
 
+
+
 scales:{
 
 
@@ -934,6 +954,7 @@ color:"white"
 
 
 },
+
 
 
 
@@ -963,7 +984,6 @@ color:"white"
 }
 
 
-
 }
 
 
@@ -981,13 +1001,13 @@ color:"white"
 
 
 
-// Initial dashboard load
+// Initial load
 
 loadDashboard();
 
 
 
-// Refresh live data every 5 seconds
+// Refresh every 5 seconds
 
 setInterval(loadDashboard,5000);
 
