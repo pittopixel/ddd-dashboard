@@ -1,80 +1,996 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mining The Bench Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-body{font-family:Arial,sans-serif;background:#1c1c1c;margin:0;color:#fff}
-.dashboard-container{padding:30px}
-.dashboard-header{background:linear-gradient(135deg,#2b2b2b,#111);border-left:10px solid #CE7D01;padding:30px;border-radius:15px;margin-bottom:35px}
-.dashboard-title{font-size:52px;font-weight:bold;color:#CE7D01;text-align:center;margin:0}
-.subtitle{text-align:center;color:#fff;font-size:20px;margin-top:15px}
-.cards,.metrics,.charts{display:flex;gap:20px;margin-bottom:30px}
-.card,.metric,.chart-box{background:#2b2b2b;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.5);padding:25px;flex:1;text-align:center}
-.gold-card{border:4px solid #00ff00}.rock-card{border:4px solid #ff8c00}.waste-card{border:4px solid #ff0000}
-.card h3{font-size:30px;color:#ddd}.value{font-size:60px;font-weight:bold;color:#CE7D01}
-.metric{border-left:5px solid #CE7D01;background:#252525}
-.metric-title{font-size:18px;color:#ccc}.metric-value{font-size:36px;font-weight:bold;color:#CE7D01}
-.chart-box h2{margin-top:0}canvas{max-height:400px}.last-update{text-align:center;color:#aaa}
-@media(max-width:800px){.cards,.metrics,.charts{flex-direction:column}}
+
+body {
+    font-family: Arial, sans-serif;
+    background:#1c1c1c;
+    margin:0;
+    padding:0;
+}
+
+
+.dashboard-container {
+
+    background:#1c1c1c;
+    padding:30px;
+    min-height:100vh;
+
+}
+
+
+
+/* HEADER */
+
+.dashboard-header {
+
+    background:
+    linear-gradient(135deg,#2b2b2b,#111111);
+
+    border-left:10px solid #CE7D01;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.5);
+
+}
+
+
+
+.dashboard-title {
+
+    font-size:52px;
+
+    font-weight:bold;
+
+    color:#CE7D01;
+
+    text-align:center;
+
+    margin:0;
+
+}
+
+
+
+.subtitle {
+
+    text-align:center;
+
+    color:white;
+
+    font-size:20px;
+
+    margin-top:15px;
+
+}
+
+
+
+
+
+/* KPI CARDS */
+
+
+.cards {
+
+    display:flex;
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.card {
+
+    background:#2b2b2b;
+
+    flex:1;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,0.5);
+
+    border-top:5px solid #CE7D01;
+
+}
+
+
+
+.card-icon {
+
+    font-size:38px;
+
+}
+
+
+
+.card h3 {
+
+    color:#ddd;
+
+}
+
+
+
+.value {
+
+    font-size:45px;
+
+    font-weight:bold;
+
+    color:#CE7D01;
+
+}
+
+
+
+
+
+/* OPERATION METRICS */
+
+
+.metrics {
+
+    display:flex;
+
+    gap:20px;
+
+    margin-bottom:40px;
+
+}
+
+
+
+.metric {
+
+    background:#252525;
+
+    flex:1;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    color:white;
+
+    border-left:5px solid #CE7D01;
+
+}
+
+
+
+.metric-title {
+
+    font-size:18px;
+
+    color:#cccccc;
+
+}
+
+
+
+.metric-value {
+
+    font-size:36px;
+
+    font-weight:bold;
+
+    color:#CE7D01;
+
+}
+
+
+
+
+
+/* CHARTS */
+
+
+.charts {
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+
+
+.chart-box {
+
+    background:#2b2b2b;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    flex:1;
+
+}
+
+
+
+.chart-box h2 {
+
+    text-align:center;
+
+    color:white;
+
+}
+
+
+
+canvas {
+
+    max-height:400px;
+
+}
+
+
+
+.last-update {
+
+    text-align:center;
+
+    color:#aaa;
+
+    margin-top:25px;
+
+}
+
+
+
+@media(max-width:800px){
+
+.cards,
+.metrics,
+.charts {
+
+flex-direction:column;
+
+}
+
+}
+
+
 </style>
-</head>
-<body>
+
+
+
+
+
 <div class="dashboard-container">
+
+
+
 <div class="dashboard-header">
-<h1 class="dashboard-title">⛏ Drill Down Day<br>Mining The Bench Challenge Dashboard</h1>
-<div class="subtitle">Live Mine Production Monitoring System</div></div>
+
+
+<h1 class="dashboard-title">
+
+⛏ Drill Down Day:
+<br>
+Mining The Bench Challenge Dashboard
+
+</h1>
+
+
+<div class="subtitle">
+
+Live Mine Production Monitoring System
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- MAIN KPI CARDS -->
+
+
 <div class="cards">
-<div class="card gold-card"><h3>Gold Beads at ROM</h3><div class="value" id="goldROM">0</div></div>
-<div class="card rock-card"><h3>Rock Beads at ROM</h3><div class="value" id="rockROM">0</div></div>
-<div class="card waste-card"><h3>Gold Beads in Waste</h3><div class="value" id="goldWaste">0</div></div>
+
+
+<div class="card">
+
+<div class="card-icon">🟡</div>
+
+<h3>Gold Beads at ROM</h3>
+
+<div class="value" id="goldROM">0</div>
+
 </div>
+
+
+
+<div class="card">
+
+<div class="card-icon">🪨</div>
+
+<h3>Rock Beads at ROM</h3>
+
+<div class="value" id="rockROM">0</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="card-icon">⚠️</div>
+
+<h3>Gold Beads in Waste</h3>
+
+<div class="value" id="goldWaste">0</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- OPERATIONS METRICS -->
+
+
 <div class="metrics">
-<div class="metric"><div class="metric-title">⛏ Total Material Moved</div><div class="metric-value" id="materialMoved">0</div></div>
-<div class="metric"><div class="metric-title">🟡 Gold Recovery</div><div class="metric-value" id="goldRecovery">0%</div></div>
-<div class="metric"><div class="metric-title">⚠️ Waste Contamination</div><div class="metric-value" id="contamination">0%</div></div>
+
+
+<div class="metric">
+
+<div class="metric-title">
+⛏ Total Material Moved
 </div>
+
+<div class="metric-value" id="materialMoved">
+0
+</div>
+
+</div>
+
+
+
+
+<div class="metric">
+
+<div class="metric-title">
+🟡 Gold Recovery
+</div>
+
+<div class="metric-value" id="goldRecovery">
+0%
+</div>
+
+</div>
+
+
+
+
+<div class="metric">
+
+<div class="metric-title">
+⚠️ Waste Contamination
+</div>
+
+<div class="metric-value" id="contamination">
+0%
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
 <div class="charts">
-<div class="chart-box"><h2>⛏ ROM Pad</h2><canvas id="romChart"></canvas></div>
-<div class="chart-box"><h2>● Waste Pile</h2><canvas id="wasteChart"></canvas></div>
+
+
+<div class="chart-box">
+
+<h2>⛏ ROM Pad</h2>
+
+<canvas id="romChart"></canvas>
+
 </div>
-<div class="last-update" id="updated">Connecting...</div>
+
+
+
+<div class="chart-box">
+
+<h2>🪨 Waste Pile</h2>
+
+<canvas id="wasteChart"></canvas>
+
+</div>
+
+
+</div>
+
+
+
+<div class="last-update" id="updated">
+
+Connecting to live data...
+
+</div>
+
+
 </div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbwkNeBP4v8iZ84WBarUCLz2Pyen72opWdGCEAncXeD8P4AT9LdbT_GlgsXidm-qQbRCVg/exec";
-let romChart,wasteChart;
+
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwkNeBP4v8iZ84WBarUCLz2Pyen72opWdGCEAncXeD8P4AT9LdbT_GlgsXidm-qQbRCVg/exec";
+
+
+
+let romChart = null;
+
+let wasteChart = null;
+
+
+
+
+
 async function loadDashboard(){
- try{
-  const data=await (await fetch(API_URL)).json();
-  goldROM.textContent=data.goldROM;rockROM.textContent=data.rockROM;goldWaste.textContent=data.goldWaste;
-  const total=data.goldROM+data.rockROM+data.goldWaste;
-  materialMoved.textContent=total;
-  const tg=data.goldROM+data.goldWaste;
-  goldRecovery.textContent=(tg?data.goldROM/tg*100:0).toFixed(1)+"%";
-  contamination.textContent=(tg?data.goldWaste/tg*100:0).toFixed(1)+"%";
-  updateCharts(data);
-  updated.textContent="Live update: "+new Date().toLocaleTimeString();
- }catch(e){updated.textContent="Unable to load live data";console.error(e);}
+
+
+try {
+
+
+const response = await fetch(API_URL);
+
+
+const data = await response.json();
+
+
+
+
+// Update main KPI cards
+
+
+document.getElementById("goldROM").innerHTML =
+data.goldROM;
+
+
+document.getElementById("rockROM").innerHTML =
+data.rockROM;
+
+
+document.getElementById("goldWaste").innerHTML =
+data.goldWaste;
+
+
+
+
+
+// Calculate operational metrics
+
+
+updateMetrics(data);
+
+
+
+// Update charts
+
+
+updateCharts(data);
+
+
+
+
+// Update timestamp
+
+
+document.getElementById("updated").innerHTML =
+
+"Live update: " + new Date().toLocaleTimeString();
+
+
+
 }
-function makeChart(canvas,title,dataObj){
- return new Chart(canvas,{type:"bar",
- data:{labels:Object.keys(dataObj),
- datasets:[
- {label:"Gold",data:Object.values(dataObj).map(t=>t.gold),backgroundColor:"#CE7D01",borderWidth:0,borderRadius:8},
- {label:"Rock",data:Object.values(dataObj).map(t=>t.rock),backgroundColor:"#C2A878",borderWidth:0,borderRadius:8}
- ]},
- options:{responsive:true,plugins:{legend:{position:"bottom",labels:{color:"white"}}},
- scales:{x:{ticks:{color:"white"}},y:{beginAtZero:true,ticks:{color:"white"}}}}
- });
+
+
+catch(error){
+
+
+console.log(error);
+
+
+document.getElementById("updated").innerHTML =
+"Unable to load live data";
+
+
 }
+
+
+}
+
+
+
+
+
+
+
+function updateMetrics(data){
+
+
+
+// Total material moved
+
+const totalMaterial =
+data.goldROM +
+data.rockROM +
+data.goldWaste;
+
+
+
+document.getElementById("materialMoved").innerHTML =
+totalMaterial;
+
+
+
+
+
+
+// Gold Recovery %
+
+const totalGold =
+data.goldROM +
+data.goldWaste;
+
+
+
+let recovery = 0;
+
+
+if(totalGold > 0){
+
+recovery =
+(data.goldROM / totalGold) * 100;
+
+}
+
+
+
+document.getElementById("goldRecovery").innerHTML =
+recovery.toFixed(1) + "%";
+
+
+
+
+
+
+// Waste contamination %
+
+let contamination = 0;
+
+
+if(totalGold > 0){
+
+contamination =
+(data.goldWaste / totalGold) * 100;
+
+}
+
+
+
+document.getElementById("contamination").innerHTML =
+contamination.toFixed(1) + "%";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 function updateCharts(data){
- if(romChart)romChart.destroy();
- if(wasteChart)wasteChart.destroy();
- romChart=makeChart(document.getElementById("romChart"),"ROM",data.romTeams);
- wasteChart=makeChart(document.getElementById("wasteChart"),"Waste",data.wasteTeams);
+
+
+
+if(romChart){
+
+romChart.destroy();
+
 }
-loadDashboard();setInterval(loadDashboard,5000);
+
+
+if(wasteChart){
+
+wasteChart.destroy();
+
+}
+
+
+
+
+
+
+
+// ROM PAD CHART
+
+
+
+romChart = new Chart(
+
+document.getElementById("romChart"),
+
+{
+
+
+type:"bar",
+
+
+data:{
+
+
+labels:Object.keys(data.romTeams),
+
+
+datasets:[
+
+
+
+{
+
+label:"Gold",
+
+data:Object.values(data.romTeams)
+.map(team=>team.gold),
+
+backgroundColor:"#CE7D01",
+
+borderColor:"#00FF00",
+
+borderWidth:3,
+
+borderRadius:8
+
+},
+
+
+
+
+{
+
+label:"Rock",
+
+data:Object.values(data.romTeams)
+.map(team=>team.rock),
+
+backgroundColor:"#C2A878",
+
+borderColor:"#FF8C00",
+
+borderWidth:3,
+
+borderRadius:8
+
+}
+
+
+
+]
+
+
+},
+
+
+
+
+options:{
+
+
+responsive:true,
+
+
+plugins:{
+
+
+legend:{
+
+
+position:"bottom",
+
+
+labels:{
+
+color:"white"
+
+}
+
+
+}
+
+
+
+},
+
+
+
+scales:{
+
+
+
+x:{
+
+
+ticks:{
+
+
+color:"white"
+
+
+}
+
+
+},
+
+
+
+y:{
+
+
+beginAtZero:true,
+
+
+ticks:{
+
+
+color:"white"
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+);
+
+
+
+
+
+
+
+
+
+
+
+// WASTE PILE CHART
+
+
+
+wasteChart = new Chart(
+
+document.getElementById("wasteChart"),
+
+{
+
+
+type:"bar",
+
+
+data:{
+
+
+labels:Object.keys(data.wasteTeams),
+
+
+datasets:[
+
+
+
+{
+
+label:"Gold",
+
+data:Object.values(data.wasteTeams)
+.map(team=>team.gold),
+
+
+backgroundColor:"#CE7D01",
+
+
+borderColor:"#FF0000",
+
+
+borderWidth:3,
+
+
+borderRadius:8
+
+
+},
+
+
+
+
+{
+
+label:"Rock",
+
+data:Object.values(data.wasteTeams)
+.map(team=>team.rock),
+
+
+backgroundColor:"#C2A878",
+
+
+borderColor:"#FF8C00",
+
+
+borderWidth:3,
+
+
+borderRadius:8
+
+
+}
+
+
+
+]
+
+
+},
+
+
+
+
+
+options:{
+
+
+responsive:true,
+
+
+plugins:{
+
+
+legend:{
+
+
+position:"bottom",
+
+
+labels:{
+
+
+color:"white"
+
+
+}
+
+
+}
+
+
+
+},
+
+
+
+scales:{
+
+
+
+x:{
+
+
+ticks:{
+
+
+color:"white"
+
+
+}
+
+
+},
+
+
+
+y:{
+
+
+beginAtZero:true,
+
+
+ticks:{
+
+
+color:"white"
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// Initial dashboard load
+
+loadDashboard();
+
+
+
+// Refresh live data every 5 seconds
+
+setInterval(loadDashboard,5000);
+
+
+
 </script>
-</body></html>
