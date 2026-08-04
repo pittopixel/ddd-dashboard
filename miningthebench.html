@@ -69,7 +69,21 @@ body {
 
 }
 
+.clock {
 
+    text-align:center;
+
+    color:white;
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    margin-top:20px;
+
+    letter-spacing:3px;
+
+}
 
 
 
@@ -312,6 +326,10 @@ Mining The Bench Challenge Dashboard
 
 Live Mine Production Monitoring System
 
+</div>
+
+<div class="clock" id="clock">
+00:00:00
 </div>
 
 
@@ -878,6 +896,23 @@ color:"white"
 
 }
 
+function updateClock(){
+
+    const now = new Date();
+
+    const hours = String(now.getHours()).padStart(2,"0");
+    const minutes = String(now.getMinutes()).padStart(2,"0");
+    const seconds = String(now.getSeconds()).padStart(2,"0");
+
+    document.getElementById("clock").innerHTML =
+    hours + ":" + minutes + ":" + seconds;
+
+}
+
+
+updateClock();
+
+setInterval(updateClock,1000);
 
 
 // Initial load
