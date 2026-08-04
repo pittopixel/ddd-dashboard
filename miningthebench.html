@@ -39,7 +39,39 @@ body {
 
 }
 
+.header-content {
 
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:40px;
+
+}
+
+
+.header-text {
+
+    flex:1;
+
+}
+
+
+.clock {
+
+    color:#CE7D01;
+
+    font-size:52px;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+    white-space:nowrap;
+
+}
 
 .dashboard-title {
 
@@ -68,23 +100,6 @@ body {
     margin-top:15px;
 
 }
-
-.clock {
-
-    text-align:center;
-
-    color:white;
-
-    font-size:32px;
-
-    font-weight:bold;
-
-    margin-top:20px;
-
-    letter-spacing:3px;
-
-}
-
 
 
 /* KPI CARDS */
@@ -313,23 +328,34 @@ flex-direction:column;
 <div class="dashboard-header">
 
 
-<h1 class="dashboard-title">
+<div class="header-content">
 
-⛏ Drill Down Day:
-<br>
-Mining The Bench Challenge Dashboard
+    <div class="header-text">
 
-</h1>
+        <h1 class="dashboard-title">
+
+        ⛏ Drill Down Day:
+        <br>
+        Mining The Bench Challenge Dashboard
+
+        </h1>
 
 
-<div class="subtitle">
+        <div class="subtitle">
 
-Live Mine Production Monitoring System
+        Live Mine Production Monitoring System
 
-</div>
+        </div>
 
-<div class="clock" id="clock">
-00:00:00
+    </div>
+
+
+    <div class="clock" id="clock">
+
+        00:00:00
+
+    </div>
+
 </div>
 
 
